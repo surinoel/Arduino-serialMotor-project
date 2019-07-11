@@ -28,22 +28,7 @@ void loop() {
     Serial.println("Failed to read from DHT sensor!");
     return;
   }
-  /*
-  while(Serial.available())
-  {
-     cTemp = Serial.read();
-     if(cTemp == '\n') {  // 개행까지 받는다
-        sCommand += '\n'; 
-        sCommand.toCharArray(buf, 30);
-        Serial.write(buf);
-        memset(buf, 0, sizeof(buf));
-        sCommand = "";
-        break;     
-     }
-     sCommand += cTemp;
-  }
-  */
-
+  
   if(receiveFlag) {
     sStart = "", sTmp = "";
     ret = sCommand.indexOf(',');
