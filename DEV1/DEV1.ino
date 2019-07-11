@@ -5,7 +5,8 @@ int prevKeyValue, curKeyValue;
 const int sw_row[4] = {13, 12, 11, 10};
 const int sw_col[4] = {9, 8, 7, 6};
 const int sw_gnd = 5;
-char buf[30];
+char buf[30], cTemp;
+String sCommand = "";
 
 int getPWMSpeed(const int);
 void incsMtSpeed(void);
@@ -64,6 +65,20 @@ void loop() {
     Serial.println(tmpSpeed);  
   }
   prevKeyValue = curKeyValue;
+  
+  while(Serial.available())
+  {
+     cTemp = Serial.read();
+     if(cTemp == '\n') {  // 개행까지 받는다
+        sCommand += '\n'; 
+        sCommand.toCharArray(buf, 30);
+        Serial.write(buf);
+        memset(buf, 0, sizeof(buf));
+        sCommand = "";
+        break;     
+     }
+     sCommand += cTemp;
+  }
 }
 
 void incsMtSpeed() {
