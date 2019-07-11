@@ -9,8 +9,10 @@
 
 구성
 ---------------
-1. Arduino Uno R3 3
-2. 5V DC-motor 3
-3. 1602CLCD using HD44780 LCD Driver 1 (https://www.sparkfun.com/datasheets/LCD/HD44780.pdf)
-4. DTH11 1
+1. Arduino Uno R3 3개
+2. 5V DC-motor 3개
+3. 1602CLCD using HD44780 LCD Driver 1개 (https://www.sparkfun.com/datasheets/LCD/HD44780.pdf)
+4. DTH11 1개
 
+// 다이어그램
+// 영상
