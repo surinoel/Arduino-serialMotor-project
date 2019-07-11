@@ -5,8 +5,9 @@ int prevKeyValue, curKeyValue;
 const int sw_row[4] = {13, 12, 11, 10};
 const int sw_col[4] = {9, 8, 7, 6};
 const int sw_gnd = 5;
-char buf[30], cTemp;
-String sCommand = "";
+char buf[30], pwmSpeedBuf[30], cTemp;
+String sCommand = "", sCommandTmp, sTmp;
+int ret;
 
 int getPWMSpeed(const int);
 void incsMtSpeed(void);
@@ -70,6 +71,19 @@ void loop() {
   {
      cTemp = Serial.read();
      if(cTemp == '\n') {  // 개행까지 받는다
+        sCommandTmp = sCommand;
+        ret = sCommandTmp.indexOf(',');
+        if(ret != -1) {
+          sTmp = sCommandTmp.substring(0, ret);
+          sCommandTmp = sCommandTmp.substring(ret+1, sCommand.length());
+          if(sTmp == "PWM") {
+              ret = sCommandTmp.indexOf(',');
+              sTmp =sCommandTmp.substring(0, ret);
+              sTmp.toCharArray(pwmSpeedBuf, 30);
+              pwmSpeed = atoi(pwmSpeedBuf);                        
+              analogWrite(pinEn, pwmSpeed);
+          }
+        }
         sCommand += '\n'; 
         sCommand.toCharArray(buf, 30);
         Serial.write(buf);
