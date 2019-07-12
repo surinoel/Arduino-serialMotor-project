@@ -19,4 +19,4 @@
 
 구현영상
 ---------------
-[![Video Label](http://img.youtube.com/vi/uLR1RNqJ1Mw/0.jpg)](https://youtu.be/HF257k9DpXg) 
+(https://youtu.be/HF257k9DpXg) 
