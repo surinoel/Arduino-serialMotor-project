@@ -14,5 +14,5 @@
 3. 1602CLCD using HD44780 LCD Driver 1개 (https://www.sparkfun.com/datasheets/LCD/HD44780.pdf)
 4. DTH11 1개
 
-![blokDiagram](./blokDiagram.jpg)
-![keypadLayout](./keypadLayout.jpg)
+![blokDiagram](./blokDiagram.JPG)
+![keypadLayout](./keypadLayout.JPG)
