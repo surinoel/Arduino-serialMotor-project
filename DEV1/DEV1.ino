@@ -1,7 +1,7 @@
 int exFlag = 0;
 int pinPos = 4, pinNeg = 2, pinEn = 3;
 int tmpSpeed, pwmSpeed = 100;
-int prevKeyValue, curKeyValue;
+int oldkey, key;
 const int sw_row[4] = {13, 12, 11, 10};
 const int sw_col[4] = {9, 8, 7, 6};
 const int sw_gnd = 5;
@@ -29,26 +29,25 @@ void setup() {
   analogWrite(pinEn, pwmSpeed);
 
   memset(buf, 0, sizeof(buf));
+  oldkey = -1;
 }
 
 void loop() {
-  curKeyValue = -1;
+  key = -1;
   for (int i = 0; i < 4; i++) {
     digitalWrite(sw_row[i], HIGH);
     for (int j = 0; j < 4; j++) {
       if ((i == 2 && j == 3) || (i == 3 && j == 0) || (i == 3) && (j == 2)) continue;
-      if (digitalRead(sw_col[j])) {
-        delay(100);
-        if(prevKeyValue != i*4 + j) {
-          curKeyValue = i*4 + j;  
-        }
+      if (oldkey == -1 && digitalRead(sw_col[j])) {
+        delay(200);
+        key = i * 4 + j;
         break;
       }
     }
     digitalWrite(sw_row[i], LOW);
   }
-  if(curKeyValue != -1) {
-    tmpSpeed = getPWMSpeed(curKeyValue);
+  if(key != -1) {
+    tmpSpeed = getPWMSpeed(key);
     if(tmpSpeed != -1) {
       if(exFlag)
       { 
@@ -65,8 +64,7 @@ void loop() {
     }
     Serial.println(tmpSpeed);  
   }
-  prevKeyValue = curKeyValue;
-  
+  oldkey = key;
   while(Serial.available())
   {
      cTemp = Serial.read();
