@@ -16,3 +16,6 @@
 
 ![blockDiagram](./blockDiagram.JPG)
 ![keypadLayout](./keypadLayout.JPG)
+
+구현영상
+---------------
