@@ -53,7 +53,7 @@ void loop() {
       { 
         if(pwmSpeed >= 0 && pwmSpeed <= 255) {
           analogWrite(pinEn, pwmSpeed);
-          serialWriteCall(pwmSpeed);  
+          serialWriteCall(pwmSpeed);  // DEV2번으로 값 전달
         }
         pwmSpeed = 0;
         exFlag = 0;
@@ -93,13 +93,13 @@ void loop() {
   }
 }
 
-void incsMtSpeed() {
+void incsMtSpeed() { // +를 눌렀을 때
   pwmSpeed = (pwmSpeed + 10 > 255) ? 0 : pwmSpeed += 10;
   analogWrite(pinEn, pwmSpeed);
   serialWriteCall(pwmSpeed);
 }
 
-void descMtSpeed() {
+void descMtSpeed() { // -를 눌렀을 때
   pwmSpeed = (pwmSpeed - 10 <= 0) ? 0 : pwmSpeed -= 10;
   analogWrite(pinEn, pwmSpeed);
   serialWriteCall(pwmSpeed);
