@@ -9,7 +9,7 @@ int pinPos = 5, pinNeg = 4, pinEn = 3;
 int pwmSpeed = 100;
 char pwmSpeedBuf[30];
 
-byte user_value[8]={
+byte user_value[8]={ // °에 대한 사용자 정의문자 생성, 5*8 DOT
     B00010,
     B00101,
     B00010,
@@ -29,6 +29,10 @@ void setup() {
   lcd.begin(16, 2);
   lcd.createChar(0, user_value);
   lcd.clear();
+  
+  lcd.setCursor(0, 1); // 초기에 LCD에 PWM값 띄우기
+  String buf = "PWM "; buf += pwmSpeed; buf += "%";
+  lcd.print(buf);
 }
 
 void loop() {
@@ -39,7 +43,7 @@ void loop() {
     if(ret != -1) {
       sTmp = sCommand.substring(0, ret);
       sCommand = sCommand.substring(ret+1, sCommand.length());
-      if(sTmp == "TH") {
+      if(sTmp == "TH") { // 값이 2개가 전달될 수 있으므로 접두어를 통해서 데이터를 구분
           ret = sCommand.indexOf(',');
           Temp = sCommand.substring(0, ret);                
           sCommand = sCommand.substring(ret+1, sCommand.length());
@@ -47,7 +51,7 @@ void loop() {
           lcd.setCursor(0, 0);
           String buf = Humi + "% " + Temp;
           lcd.print(buf);  
-          lcd.write(static_cast<byte>(0x00));
+          lcd.write(static_cast<byte>(0x00)); // 사용자 정의문자 생성 
           lcd.print('C');
       }
       else if(sTmp == "PWM") {
@@ -71,7 +75,7 @@ void loop() {
 
 void serialEvent(void) 
 {
-  while(Serial.available())
+  while(Serial.available()) // DEV2번에서 값이 왔다면
   {
      cTemp = Serial.read();
      if(cTemp == '\n') {  // 개행까지 받는다
