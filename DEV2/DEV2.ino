@@ -12,7 +12,7 @@ DHT dht(pinDht, DHTTYPE);
 
 void setup() {
   Serial.begin(115200); 
-  pinMode(pinPos, OUTPUT); pinMode(pinNeg, OUTPUT); pinMode(pinEn, OUTPUT);
+  pinMode(pinPos, OUTPUT); pinMode(pinNeg, OUTPUT); pinMode(pinEn, OUTPUT); // PWM핀 초기화
   digitalWrite(pinPos, HIGH);
   digitalWrite(pinNeg, LOW); 
   analogWrite(pinEn, pwmSpeed);
@@ -29,7 +29,7 @@ void loop() {
     return;
   }
   
-  if(receiveFlag) {
+  if(receiveFlag) { // DEV1에서 전달한 PWM 값 분석
     sStart = "", sTmp = "";
     ret = sCommand.indexOf(',');
     if(ret != -1) {
@@ -48,7 +48,8 @@ void loop() {
     sCommand = "";
   }
   
-  String msg1 = "TH,"; 
+  // 300ms 동안 온습도 값을 DEV3에 전달
+  String msg1 = "TH,";  
   msg1 += (int)fTemp; 
   msg1 += ",";
   msg1 += (int)fHumi;
@@ -59,7 +60,7 @@ void loop() {
 
 void serialEvent(void) 
 {
-  while(Serial.available())
+  while(Serial.available()) // DEV1에서 데이터가 왔다면
   {
      cTemp = Serial.read();
      if(cTemp == '\n') {  // 개행까지 받는다
