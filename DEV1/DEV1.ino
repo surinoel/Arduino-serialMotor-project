@@ -16,40 +16,40 @@ void serialWriteCall(int);
 
 void setup() {
   Serial.begin(115200);
-  for (int i = 0; i < 4; i++) {
+  for (int i = 0; i < 4; i++) {       // 키패드 입출력 설정
     pinMode(sw_row[i], OUTPUT);
     pinMode(sw_col[i], INPUT);
   }
   pinMode(sw_gnd, OUTPUT);
   digitalWrite(sw_gnd, LOW);
 
-  pinMode(pinPos, OUTPUT); pinMode(pinNeg, OUTPUT); pinMode(pinEn, OUTPUT);
+  pinMode(pinPos, OUTPUT); pinMode(pinNeg, OUTPUT); pinMode(pinEn, OUTPUT); // PWM 핀 입출력 설정
   digitalWrite(pinPos, HIGH);
   digitalWrite(pinNeg, LOW);
   analogWrite(pinEn, pwmSpeed);
 
-  memset(buf, 0, sizeof(buf));
+  memset(buf, 0, sizeof(buf));        // 변수 초기화
   oldkey = -1;
 }
 
 void loop() {
-  key = -1;
+  key = -1;   // key는 처음에 -1
   for (int i = 0; i < 4; i++) {
     digitalWrite(sw_row[i], HIGH);
     for (int j = 0; j < 4; j++) {
       if ((i == 2 && j == 3) || (i == 3 && j == 0) || (i == 3) && (j == 2)) continue;
-      if (oldkey == -1 && digitalRead(sw_col[j])) {
-        delay(200);
+      if (oldkey == -1 && digitalRead(sw_col[j])) {  // 입력의 변화가 생길 때만
+        delay(200);   // delay   
         key = i * 4 + j;
         break;
       }
     }
-    digitalWrite(sw_row[i], LOW);
+    digitalWrite(sw_row[i], LOW); 
   }
   if(key != -1) {
-    tmpSpeed = getPWMSpeed(key);
-    if(tmpSpeed != -1) {
-      if(exFlag)
+    tmpSpeed = getPWMSpeed(key); // 실제 입력된 숫자로 변환
+    if(tmpSpeed != -1) {  // 숫자판 혹은 '='을 눌렀다면
+      if(exFlag)  // '='을 입력했을 때
       { 
         if(pwmSpeed >= 0 && pwmSpeed <= 255) {
           analogWrite(pinEn, pwmSpeed);
@@ -58,14 +58,14 @@ void loop() {
         pwmSpeed = 0;
         exFlag = 0;
       }
-      else {
+      else {  // 누적
         pwmSpeed = pwmSpeed * 10 + tmpSpeed;    
       }    
     }
     Serial.println(tmpSpeed);  
   }
-  oldkey = key;
-  while(Serial.available())
+  oldkey = key; // key 전환
+  while(Serial.available()) // 시리얼 입력을 받을 때
   {
      cTemp = Serial.read();
      if(cTemp == '\n') {  // 개행까지 받는다
